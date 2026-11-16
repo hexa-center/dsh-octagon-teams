@@ -1,0 +1,7 @@
+# Octagon Teams: one Host row that registers the team's agent presets at runtime.
+# Presets are registered through ctx.agentPresets.register() because user-defined
+# roles must appear in the lead's allowedAgentPresets list, which is static YAML.
+- insert:
+    - id: octagon-teams
+      name: '@local/octagon-teams'
+      config: { selftest: true }

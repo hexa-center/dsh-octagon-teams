@@ -1,0 +1,45 @@
+{
+  "name": "@local/octagon-teams",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Octagon Teams: a preset agent mode with a read-only lead and delegated role agents.",
+  "exports": {
+    ".": "./index.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./runtime": "./runtime.js",
+    "./client": "./client.js"
+  },
+  "files": [
+    "index.js",
+    "baseline.js",
+    "uuid7.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "docs",
+    "page.js",
+    "worker-state.js",
+    "tools.js",
+    "runtime.js",
+    "policy.js",
+    "state.js",
+    "client.js",
+    "requests.js",
+    "capability.js",
+    "selftest.js"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-settings"
+      ]
+    }
+  }
+}

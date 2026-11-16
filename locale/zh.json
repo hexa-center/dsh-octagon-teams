@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "Octagon Teams",
+    "description": "预设 agent 模式：只读 Lead 负责拆解与验收，把编程、设计、文档、测试分派给八个角色智能体。",
+    "detail": "docs/DETAIL.md"
+  }
+}

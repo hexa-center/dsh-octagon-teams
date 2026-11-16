@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "Octagon Teams",
+    "description": "A preset agent mode with a read-only lead that delegates coding, design, docs, and testing to eight role agents.",
+    "detail": "docs/DETAIL.md"
+  }
+}
