@@ -83,6 +83,21 @@ capability.js    批准后的授权落盘与策略刷新
 selftest.js      端到端验收自检
 ```
 
+## 排查：预设没出现或显示「加载失败」
+
+先看健康接口（端口换成你当前 Web GUI 的端口）：
+
+```bash
+curl -s http://127.0.0.1:<port>/octagon-teams/api/health
+```
+
+- `presets[].broken` 有值 → 挂载该预设时抛出的原始错误，按错误修配置。
+- `registered` 里没有 `Octagon Teams` → 插件条目没激活。用 CLI 启动一次能看到原因，
+  例如 `pending (waiting for services: agentPresets, webServer)` 表示这个 DSH 构建没有
+  预设注册表或 Web 服务（版本太旧，或装进了没有 `dsh-web-app` 的 profile）。
+- `services` 全为 `false` → 请求打到了别的进程；确认端口来自当前 GUI 输出。
+- `version` 与仓库最新 tag 不一致 → 装的是旧版本，卸载重装即可。
+
 ## 限制
 
 - 组合是团队共享的：单个 preset 只有一个插件组合，角色的「不可见工具」靠 guard 拒绝实现；

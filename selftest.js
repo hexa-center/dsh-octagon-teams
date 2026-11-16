@@ -16,18 +16,23 @@ const TASK_DEFAULT = '用一句话说明你在这个工作区里能做什么。'
  * Drive one blank team session through a single prompt and summarize it.
  * @param {object} ctx - Host context.
  * @param {{ task?: string, cwd?: string }} input - Task text and working directory.
+ * @param {{ agents: object, agentDefaultModel: object }} services - Services the caller resolved.
  * @returns {Promise<object>} Run summary.
  */
-export async function runSelfTest(ctx, input = {}) {
+export async function runSelfTest(ctx, input = {}, services = {}) {
   const state = loadState()
   const lead = effectiveLead()
   const presetId = state.leadId
-  const agents = ctx.agents
+  const agents = services.agents || ctx.agents
   const cwd = input.cwd || process.cwd()
   const task = (input.task || TASK_DEFAULT).trim()
 
   const sessionId = `session-octagon-selftest-${randomUUID()}`
-  const agentOptions = ctx.agentDefaultModel ? ctx.agentDefaultModel.currentSelection() : undefined
+  const agentOptions = services.agentDefaultModel
+    ? services.agentDefaultModel.currentSelection()
+    : ctx.agentDefaultModel
+      ? ctx.agentDefaultModel.currentSelection()
+      : undefined
   const handle = await agents.create({ sessionId, meta: { cwd, agentPreset: presetId }, agentOptions })
   const agent = handle.agent || handle
   const mounted = ctx.agentPresets.presetForSession

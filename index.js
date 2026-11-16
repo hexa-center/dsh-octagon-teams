@@ -8,6 +8,7 @@
  * and inherit this composition. Ids are `octagon-<uuidv7>`; the shipped baseline
  * never changes and user edits live in an overlay file (`data.js`).
  */
+import { readFileSync } from 'node:fs'
 import { renderPage } from './page.js'
 import { runSelfTest } from './selftest.js'
 import { describeTools, missingTools } from './tools.js'
@@ -21,10 +22,22 @@ import {
 } from './state.js'
 
 export const name = 'octagon-teams'
+
+/** This bundle's version, reported by `/api/health` so installs can be compared. */
+const PACKAGE_VERSION = (() => {
+  try {
+    return JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf8')).version ?? null
+  } catch {
+    return null
+  }
+})()
 // `webServer` must be injected, not probed with ctx.get(): on a cold boot the
 // service is not registered yet when this entry applies, and an early return
 // would leave the configuration port unrouted until the next reload.
-export const inject = ['agentPresets', 'webServer', 'agents', 'agentDefaultModel']
+// `agents` and `agentDefaultModel` are only used by the optional self test, so
+// they stay out of `inject`: requiring them would leave the whole entry pending
+// (and the team preset unregistered) on installs whose DSH build lacks them.
+export const inject = ['agentPresets', 'webServer']
 
 const PAGE_HEADERS = { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' }
 const JSON_HEADERS = { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' }
@@ -283,9 +296,24 @@ export async function apply(ctx, config = {}) {
       if (path === '/health' || path === '/api/health') {
         const presets = await ctx.agentPresets.list()
         return send(res, 200, {
+          version: PACKAGE_VERSION,
           team: definitions().state.leadId,
+          profileDir: resolveProfileDir(),
           registered: presets.length,
-          presets: presets.map((preset) => ({ id: preset.id, name: preset.name, broken: preset.broken })),
+          presets: presets.map((preset) => ({
+            id: preset.id,
+            name: preset.name ?? null,
+            broken: preset.broken ?? null,
+          })),
+          services: {
+            agentPresets: Boolean(ctx.get('agentPresets')),
+            webServer: Boolean(ctx.get('webServer')),
+            agents: Boolean(ctx.get('agents')),
+            agentDefaultModel: Boolean(ctx.get('agentDefaultModel')),
+            subagents: Boolean(ctx.get('subagents')),
+            agentTeams: Boolean(ctx.get('agentTeams')),
+          },
+          selftest: config.selftest === true,
           client: clientEntry(ctx),
         })
       }
@@ -312,7 +340,12 @@ export async function apply(ctx, config = {}) {
       if (resource === 'selftest') {
         if (method !== 'POST') return send(res, 405, { error: 'method not allowed' })
         if (config.selftest !== true) return send(res, 404, { error: 'selftest is disabled (set `selftest: true` on the octagon-teams row)' })
-        return send(res, 200, await runSelfTest(ctx, await readJson(req)))
+        const agents = ctx.get('agents')
+        const agentDefaultModel = ctx.get('agentDefaultModel')
+        if (!agents || !agentDefaultModel) {
+          return send(res, 503, { error: 'selftest needs the agents and agentDefaultModel services, which this DSH build does not expose' })
+        }
+        return send(res, 200, await runSelfTest(ctx, await readJson(req), { agents, agentDefaultModel }))
       }
 
       if (resource === 'roles' && !key) {

@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.0.3 — 2026-11-16
+
+修「换个环境安装后预设加载不出来」的排查与容错：
+
+- `inject` 只保留 `agentPresets` + `webServer`。`agents` / `agentDefaultModel` 仅自检使用，
+  改为运行时探测：DSH 构建里缺这两个服务时，插件照常注册团队预设，只是自检接口返回 503
+  （此前会把整个插件条目卡在 pending，表现为预设根本没注册）。
+- `/api/health` 增加诊断字段：`version`、`profileDir`、每个预设的 `broken` 原因、
+  `services` 可用性、`selftest` 开关；排查安装问题一眼能看出缺哪个服务。
+- README 增加「预设没出现 / 加载失败」排查步骤。
+
 ## v0.0.2 — 2026-11-16
 
 - 包名改为 `@hexa-center/octagon-teams`（原 `@local/octagon-teams`），可直接从 GitHub 安装。

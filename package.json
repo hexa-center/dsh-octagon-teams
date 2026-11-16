@@ -1,6 +1,6 @@
 {
   "name": "@hexa-center/octagon-teams",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "type": "module",
   "description": "Octagon Teams: a DeepSeek Harness agent preset — a read-only lead delegating to role agents.",
