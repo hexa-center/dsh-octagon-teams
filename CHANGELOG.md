@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.0.2 — 2026-11-16
+
+- 包名改为 `@hexa-center/octagon-teams`（原 `@local/octagon-teams`），可直接从 GitHub 安装。
+- 插件行、角色运行时行、客户端模块 id 与文档同步更新；预设 id 与 profile 状态保持不变，
+  升级不会丢失角色配置与已批准的能力申请。
+- 仓库公开：https://github.com/hexa-center/dsh-octagon-teams
+
 ## v0.0.1 — 2026-11-16
 
 首个可用版本：把「一个团队」做成单个 DSH agent 预设。

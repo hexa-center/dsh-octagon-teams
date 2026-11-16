@@ -53,7 +53,7 @@ function teamRows() {
     { id: 'tool-todo', name: '@deepseek-ai/dsh-tool-todo', config: { allowParallelInProgress: true } },
     { id: 'agent-instructions', name: '@deepseek-ai/dsh-agent-instructions', config: { maxBytes: 65536 } },
     { id: 'time-context', name: '@deepseek-ai/dsh-time-context' },
-    { id: 'team-runtime', name: '@local/octagon-teams/runtime', config: { profileDir: resolveProfileDir() } },
+    { id: 'team-runtime', name: '@hexa-center/octagon-teams/runtime', config: { profileDir: resolveProfileDir() } },
     { id: 'delegation', name: 'cordis:group', group: true, isolate: { workflowEngine: true }, config: [
       { id: 'tool-subagent-control', name: '@deepseek-ai/dsh-tool-subagent-control', config: { interrupt: false } },
     ] },
@@ -262,7 +262,7 @@ export async function apply(ctx, config = {}) {
   function clientEntry(ctx) {
     try {
       const graph = ctx.get('clientModules')?.graph?.()
-      const entry = graph?.entries?.find((item) => item.id === '@local/octagon-teams')
+      const entry = graph?.entries?.find((item) => item.id === '@hexa-center/octagon-teams')
       if (entry === undefined) return null
       return { url: entry.url, rev: entry.rev, immediately: entry.immediately }
     } catch {

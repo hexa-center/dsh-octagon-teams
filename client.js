@@ -8,7 +8,7 @@
  * React re-renders through a MutationObserver, and is removed on dispose.
  */
 window.__ModuleLoader__.load({
-  id: '@local/octagon-teams',
+  id: '@hexa-center/octagon-teams',
   factory(require) {
     const ZH = { openCard: '打开配置', openTitle: '在浏览器打开 Octagon Teams 的配置页', resolving: '解析地址…', unavailable: '无法获取地址' }
     const EN = { openCard: 'Open config', openTitle: 'Open the Octagon Teams configuration page in the browser', resolving: 'Resolving…', unavailable: 'Address unavailable' }

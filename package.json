@@ -1,9 +1,9 @@
 {
-  "name": "@local/octagon-teams",
-  "version": "0.0.1",
+  "name": "@hexa-center/octagon-teams",
+  "version": "0.0.2",
   "private": true,
   "type": "module",
-  "description": "Octagon Teams: a preset agent mode with a read-only lead and delegated role agents.",
+  "description": "Octagon Teams: a DeepSeek Harness agent preset — a read-only lead delegating to role agents.",
   "exports": {
     ".": "./index.js",
     "./locale/*.json": "./locale/*.json",

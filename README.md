@@ -103,7 +103,7 @@ curl -s -X POST localhost:<port>/octagon-teams/api/selftest \
 
 安装或重载：
 
-在「设置 → 插件」里卸载 `@local/octagon-teams` 再重新安装本目录（或调用
+在「设置 → 插件」里卸载 `@hexa-center/octagon-teams` 再重新安装本目录（或调用
 `plugin_manager` 的 `remove_bundle` / `install_bundle`）。
 
 详细设计与验收记录见 [docs/DETAIL.md](docs/DETAIL.md)、[docs/M5-ACCEPTANCE.md](docs/M5-ACCEPTANCE.md)、

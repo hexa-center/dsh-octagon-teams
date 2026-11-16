@@ -3,5 +3,5 @@
 # roles must appear in the lead's allowedAgentPresets list, which is static YAML.
 - insert:
     - id: octagon-teams
-      name: '@local/octagon-teams'
+      name: '@hexa-center/octagon-teams'
       config: { selftest: true }
